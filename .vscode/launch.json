@@ -1,0 +1,29 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+      {
+          "name": "(mpirun) Launch",
+          "type": "cppdbg",
+          "request": "launch",
+          "program": "/usr/bin/mpirun",
+          "args": ["--oversubscribe", "-np", "4", "${fileDirname}/${fileBasenameNoExtension}", "small.ecg"],
+          "stopAtEntry": false,
+          "cwd": "${workspaceFolder}",
+          "environment": [],
+          "externalConsole": false,
+          
+      },
+      {
+        "name": "(mpicxx) Compile",
+        "type": "cppdbg",
+        "request": "launch",
+        "program": "/usr/bin/mpicxx",
+        "args": ["-o", "${fileDirname}/${fileBasenameNoExtension}", "${fileDirname}/${fileBasenameNoExtension}.cpp"],
+        "stopAtEntry": false,
+        "cwd": "${workspaceFolder}",
+        "environment": [],
+        "externalConsole": false,
+        
+    }
+  ]
+}
