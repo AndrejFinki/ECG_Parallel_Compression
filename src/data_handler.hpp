@@ -8,8 +8,10 @@ class DataHandler {
 
 public:
 
-    DataHandler( int argc, char ** argv )
-    {
+    DataHandler(
+        int argc,
+        char ** argv
+    ) {
         assert( argc >= 2 && "DataHandler constructor failed! Missing data file path." );
         data_file_name = argv[1];
         data_path = data_directory + data_file_name;
