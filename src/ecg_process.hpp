@@ -5,7 +5,6 @@
 #include <mpi.h>
 using namespace std;
 
-#include "program_state.hpp"
 #include "compression.hpp"
 
 class ECGProcess {
@@ -14,76 +13,38 @@ public:
 
     ECGProcess() = default;
 
-    static void run( int, char ** );
-    static void mpi_init();
-    static void mpi_finalize();
+    static vector <int> main_process( const vector <int> *, const int & );
+    static void secondary_process();
 
 };
 
-void ECGProcess::run( int argc, char ** argv )
+vector <int> ECGProcess::main_process( const vector <int> * data, const int &size )
 {
-    int rank, size;
-    MPI_Comm_rank( MPI_COMM_WORLD, &rank );
-    MPI_Comm_size( MPI_COMM_WORLD, &size );
+    int data_per_process = data->size() / size;
+    MPI_Bcast( &data_per_process, 1, MPI_INT, 0, MPI_COMM_WORLD );
 
-    switch( rank )
-    {
-        case 0: {
+    vector <int> pdata( data_per_process );
+    MPI_Scatter( data->data(), data_per_process, MPI_INT, pdata.data(), data_per_process, MPI_INT, 0, MPI_COMM_WORLD );
 
-            ProgramState *state = new ProgramState( argc, argv );
-            state->read_file();
-            const vector <int> *data = state->get_ecg_data();
+    Compression::inplace_compress( pdata );
 
-            int data_per_process = data->size() / size;
-            MPI_Bcast( &data_per_process, 1, MPI_INT, 0, MPI_COMM_WORLD );
+    vector <int> sq_data( data_per_process * size );
+    MPI_Gather( pdata.data(), data_per_process, MPI_INT, sq_data.data(), data_per_process, MPI_INT, 0, MPI_COMM_WORLD );
 
-            vector <int> pdata( data_per_process );
-            MPI_Scatter( data->data(), data_per_process, MPI_INT, pdata.data(), data_per_process, MPI_INT, 0, MPI_COMM_WORLD );
-
-            Compression::inplace_compress( pdata );
-
-            vector <int> sq_data( data_per_process * size );
-            MPI_Gather( pdata.data(), data_per_process, MPI_INT, sq_data.data(), data_per_process, MPI_INT, 0, MPI_COMM_WORLD );
-
-            int last_element = sq_data.size()-1;
-            cout << sq_data[ last_element ] << ' ' << sqrt( sq_data[ last_element ] ) << endl;
-
-            delete state;
-
-            break;
-
-        }
-
-        default: {
-
-            int data_per_process;
-
-            MPI_Bcast( &data_per_process, 1, MPI_INT, 0, MPI_COMM_WORLD );
-
-            vector <int> pdata( data_per_process );
-
-            MPI_Scatter( NULL, 0, MPI_INT, pdata.data(), data_per_process, MPI_INT, 0, MPI_COMM_WORLD );
-
-            Compression::inplace_compress( pdata );
-
-            MPI_Gather( pdata.data(), data_per_process, MPI_INT, NULL, 0, MPI_INT, 0, MPI_COMM_WORLD );
-
-        }
-    }
-
+    return sq_data;
 }
 
-void ECGProcess::mpi_init()
+void ECGProcess::secondary_process()
 {
-    int argc = 1;
-    char *argv = "/workspaces/IV_PIDP/Proekt/src/driver";
-    char **argv1 = &argv;
-    MPI_Init( &argc, &argv1 );
-}
+    int data_per_process;
+    MPI_Bcast( &data_per_process, 1, MPI_INT, 0, MPI_COMM_WORLD );
 
-void ECGProcess::mpi_finalize()
-{
-    MPI_Finalize();
+    vector <int> pdata( data_per_process );
+    MPI_Scatter( NULL, 0, MPI_INT, pdata.data(), data_per_process, MPI_INT, 0, MPI_COMM_WORLD );
+
+    Compression::inplace_compress( pdata );
+    
+    MPI_Gather( pdata.data(), data_per_process, MPI_INT, NULL, 0, MPI_INT, 0, MPI_COMM_WORLD );
 }
 
 #endif
