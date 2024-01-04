@@ -29,8 +29,8 @@ public:
 
 private:
 
-    const string data_directory = "../IV_PIDP/Proekt/data/";
-    const string output_directory = "../IV_PIDP/Proekt/output/";
+    const string data_directory = "../ECG_Parallel_Compression/data/";
+    const string output_directory = "../ECG_Parallel_Compression/output/";
     string data_path = "";
     string data_file_name = "";
     vector <int> ecg_data;
@@ -76,6 +76,7 @@ void DataHandler::write_output(
     const vector <int> &data
 ) {
     fstream file( output_directory + data_file_name + ".cmp", fstream::out );
+    assert( file && "Output file write failed!" );
     for( const int &i : data ) file << i << endl;
     file.close();
 }
