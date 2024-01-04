@@ -6,8 +6,10 @@ using namespace std;
 
 #include "mpi_handler.hpp"
 
-int main( int argc, char ** argv )
-{
+int main(
+    int argc,
+    char ** argv
+) {
     MPI_Handler::mpi_init();
 
     MPI_Handler::run( argc, argv );

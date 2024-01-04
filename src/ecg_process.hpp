@@ -18,8 +18,10 @@ public:
 
 };
 
-vector <int> ECGProcess::main_process( const vector <int> * data, const int &size )
-{
+vector <int> ECGProcess::main_process(
+    const vector <int> * data,
+    const int &size
+) {
     int data_per_process = data->size() / size;
     MPI_Bcast( &data_per_process, 1, MPI_INT, 0, MPI_COMM_WORLD );
 
