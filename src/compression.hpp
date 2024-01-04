@@ -98,10 +98,4 @@ int Compression::decode_difference_big(
     return ( int )( encoded_difference.to_ulong() );
 }
 
-/*  TODO: Create verify_compression() function.
-        *) Parameters should be the original uncompressed data and the generated compressed data
-        *) The verifier will sequentially decompress the compressed data by calling inplace_decompress
-        *) The verifier should make sure the resulting decompressed data is equal to the original
-*/
-
 #endif

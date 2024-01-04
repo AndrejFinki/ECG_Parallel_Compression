@@ -4,13 +4,6 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-/*  TODO: Make DataHander easier to use and more flexible.
-        *) Allow for specifying whether we want to use a data file or an output file
-        *) Allow for reading/writing for either option
-        *) Allow for specifying both the data and the output directory manually
-        *) Make sure it is easy to use for the verifier, that will compare the decompressed output file with each original ecg file
-*/
-
 class DataHandler {
 
 public:
