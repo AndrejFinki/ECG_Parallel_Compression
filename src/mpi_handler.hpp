@@ -14,29 +14,29 @@ public:
 
     MPI_Handler() = default;
 
-    static void run( int, char ** );
+    static void run( const string & );
     static void mpi_init();
     static void mpi_finalize();
+    static int get_rank();
+    static int get_size();
 
 };
 
 void MPI_Handler::run(
-    int argc,
-    char ** argv
+    const string &file_name
 ) {
-    int rank, size;
-    MPI_Comm_rank( MPI_COMM_WORLD, &rank );
-    MPI_Comm_size( MPI_COMM_WORLD, &size );
-
-    switch( rank )
+    switch( MPI_Handler::get_rank() )
     {
         case 0: {
-            DataHandler *state = new DataHandler( argc, argv );
-            state->read_data();
-            const vector <int> * data = state->get_ecg_data();
-            const vector <int> compressed_data = ECGProcess::main_process( data, size );
-            state->write_output( compressed_data );
-            delete state;
+            DataHandler *input = new DataHandler( "../ECG_Parallel_Compression/data/" + file_name );
+            const vector <int> * data = input->read();
+
+            DataHandler *output = new DataHandler( "../ECG_Parallel_Compression/output/" + file_name );
+            const vector <int> compressed_data = ECGProcess::main_process( data, MPI_Handler::get_size() );
+            output->write( &compressed_data );
+
+            delete input;
+            delete output;
             break;
         }
 
@@ -49,7 +49,7 @@ void MPI_Handler::run(
 void MPI_Handler::mpi_init()
 {
     int argc = 1;
-    char *argv = "/workspaces/IV_PIDP/Proekt/src/driver";
+    char *argv = "/workspaces/ECG_Parallel_Compression/src/driver";
     char **argv1 = &argv;
     MPI_Init( &argc, &argv1 );
 }
@@ -57,6 +57,20 @@ void MPI_Handler::mpi_init()
 void MPI_Handler::mpi_finalize()
 {
     MPI_Finalize();
+}
+
+int MPI_Handler::get_rank()
+{
+    int rank;
+    MPI_Comm_rank( MPI_COMM_WORLD, &rank );
+    return rank;
+}
+
+int MPI_Handler::get_size()
+{
+    int size;
+    MPI_Comm_size( MPI_COMM_WORLD, &size );
+    return size;
 }
 
 #endif

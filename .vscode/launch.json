@@ -6,7 +6,7 @@
           "type": "cppdbg",
           "request": "launch",
           "program": "/usr/bin/mpirun",
-          "args": ["--oversubscribe", "-np", "1", "${fileDirname}/${fileBasenameNoExtension}", "100.ecg"],
+          "args": ["--oversubscribe", "-np", "4", "${fileDirname}/${fileBasenameNoExtension}", "100.ecg"],
           "stopAtEntry": false,
           "cwd": "${workspaceFolder}",
           "environment": [],

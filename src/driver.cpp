@@ -11,13 +11,13 @@ int main(
     int argc,
     char ** argv
 ) {
-    Timer *timer = new Timer( "ECG Total Compression Time" );
-
     MPI_Handler::mpi_init();
 
-    MPI_Handler::run( argc, argv );
+    Timer *timer = ( MPI_Handler::get_rank() ? nullptr : new Timer( "ECG Total Compression Time" ) );
 
-    MPI_Handler::mpi_finalize();
+    MPI_Handler::run( argv[1] );
 
     delete timer;
+
+    MPI_Handler::mpi_finalize();
 }
