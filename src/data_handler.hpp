@@ -4,11 +4,11 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-class DataHandler {
+class Data_Handler {
 
 public:
 
-    DataHandler(
+    Data_Handler(
         string file_path_arg
     ) {
         file_path = file_path_arg;
@@ -24,7 +24,7 @@ private:
 
 };
 
-const vector <int> * DataHandler::read()
+const vector <int> * Data_Handler::read()
 {
     fstream file;
     file.open( file_path, fstream::in );
@@ -41,7 +41,7 @@ const vector <int> * DataHandler::read()
     return &ecg_data;
 }
 
-void DataHandler::write(
+void Data_Handler::write(
     const vector <int> * data
 ) {
     fstream file( file_path, fstream::out );

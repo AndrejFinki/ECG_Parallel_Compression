@@ -28,11 +28,11 @@ void MPI_Handler::run(
     switch( MPI_Handler::get_rank() )
     {
         case 0: {
-            DataHandler *input = new DataHandler( "../ECG_Parallel_Compression/data/" + file_name );
+            Data_Handler *input = new Data_Handler( "../ECG_Parallel_Compression/data/" + file_name );
             const vector <int> * data = input->read();
 
-            DataHandler *output = new DataHandler( "../ECG_Parallel_Compression/output/" + file_name );
-            const vector <int> compressed_data = ECGProcess::main_process( data, MPI_Handler::get_size() );
+            Data_Handler *output = new Data_Handler( "../ECG_Parallel_Compression/output/" + file_name );
+            const vector <int> compressed_data = ECG_Process::main_process( data, MPI_Handler::get_size() );
             output->write( &compressed_data );
 
             delete input;
@@ -41,7 +41,7 @@ void MPI_Handler::run(
         }
 
         default: {
-            ECGProcess::secondary_process();
+            ECG_Process::secondary_process();
         }
     }
 }
