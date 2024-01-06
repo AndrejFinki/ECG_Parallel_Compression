@@ -15,7 +15,7 @@ int main(
 
     Timer *timer = ( MPI_Handler::get_rank() ? nullptr : new Timer( "ECG Total Compression Time" ) );
 
-    MPI_Handler::run( argc, argv );
+    MPI_Handler::run( argv[1] );
 
     delete timer;
 
