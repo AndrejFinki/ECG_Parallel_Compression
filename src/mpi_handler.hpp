@@ -19,6 +19,7 @@ public:
     static void mpi_finalize();
     static int get_rank();
     static int get_size();
+    static void sync();
 
 };
 
@@ -72,6 +73,11 @@ int MPI_Handler::get_size()
     int size;
     MPI_Comm_size( MPI_COMM_WORLD, &size );
     return size;
+}
+
+void MPI_Handler::sync()
+{
+    MPI_Barrier( MPI_COMM_WORLD );
 }
 
 #endif
