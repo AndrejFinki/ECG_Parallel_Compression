@@ -15,23 +15,32 @@ int main(
     int argc,
     char ** argv
 ) {
-    const string file_name = argv[1];
-    const string file_name_data = data_dir + file_name;
-    const string file_name_output = output_dir + file_name;
 
     MPI_Handler::mpi_init();
 
-    if( !MPI_Handler::get_rank() ) Compression::print_parameters( file_name, MPI_Handler::get_size(), true );
+    if( !MPI_Handler::get_rank() ) Compression::print_parameters( "*", MPI_Handler::get_size(), true );
 
-    Timer *timer_compression = ( MPI_Handler::get_rank() ? nullptr : new Timer( "ECG Total Compression Time" ) );
+    vector <string> ecg_files = Data_Handler::get_files_in_dir( data_dir );
 
-    MPI_Handler::run( file_name_data, file_name_output );
+    for( const string &ecg_file : ecg_files ) {
 
-    MPI_Handler::sync();
+        const string file_name = ecg_file;
+        const string file_name_data = data_dir + file_name;
+        const string file_name_output = output_dir + file_name;
+        
+        if( !MPI_Handler::get_rank() ) Compression::print_parameters( file_name, MPI_Handler::get_size() );
 
-    delete timer_compression;
+        Timer *timer_compression = ( MPI_Handler::get_rank() ? nullptr : new Timer( "ECG Total Compression Time ( " + file_name + " )"  ) );
 
-    if( !MPI_Handler::get_rank() ) Compression::verify_compression( Data_Handler( file_name_data ).read(), Data_Handler( file_name_output ).read() );
+        MPI_Handler::run( file_name_data, file_name_output );
+
+        MPI_Handler::sync();
+
+        delete timer_compression;
+
+        if( !MPI_Handler::get_rank() ) Compression::verify_compression( Data_Handler( file_name_data ).read(), Data_Handler( file_name_output ).read() );
+
+    }
 
     MPI_Handler::mpi_finalize();
 }
