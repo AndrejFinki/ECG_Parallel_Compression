@@ -18,7 +18,7 @@ int main(
 
     MPI_Handler::mpi_init();
 
-    if( !MPI_Handler::get_rank() ) Compression::print_parameters( file_name, MPI_Handler::get_size() );
+    if( !MPI_Handler::get_rank() ) Compression::print_parameters( file_name, MPI_Handler::get_size(), true );
 
     Timer *timer_compression = ( MPI_Handler::get_rank() ? nullptr : new Timer( "ECG Total Compression Time" ) );
 
