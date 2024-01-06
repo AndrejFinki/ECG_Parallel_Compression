@@ -14,7 +14,7 @@ public:
 
     MPI_Handler() = default;
 
-    static void run( int, char ** );
+    static void run( const string & );
     static void mpi_init();
     static void mpi_finalize();
     static int get_rank();
@@ -23,18 +23,20 @@ public:
 };
 
 void MPI_Handler::run(
-    int argc,
-    char ** argv
+    const string &file_name
 ) {
     switch( MPI_Handler::get_rank() )
     {
         case 0: {
-            DataHandler *state = new DataHandler( argc, argv );
-            state->read_data();
-            const vector <int> * data = state->get_ecg_data();
+            DataHandler *input = new DataHandler( "../ECG_Parallel_Compression/data/" + file_name );
+            const vector <int> * data = input->read();
+
+            DataHandler *output = new DataHandler( "../ECG_Parallel_Compression/output/" + file_name );
             const vector <int> compressed_data = ECGProcess::main_process( data, MPI_Handler::get_size() );
-            state->write_output( compressed_data );
-            delete state;
+            output->write( &compressed_data );
+
+            delete input;
+            delete output;
             break;
         }
 
