@@ -16,6 +16,7 @@ public:
 
     const vector <int> * read();
     void write( const vector <int> * );
+    static vector <string> get_files_in_dir( const string & );
 
 private:
 
@@ -53,6 +54,25 @@ void Data_Handler::write(
     }
 
     file.close();
+}
+
+vector <string> Data_Handler::get_files_in_dir(
+    const string & dir
+) {
+    const string temp_file_name = "files.tmp";
+    string command = "ls " + dir + " > " + temp_file_name;
+    system( command.c_str() );
+
+    fstream file;
+    file.open( temp_file_name, fstream::in );
+
+    assert( file && "Get files in directory check failed!" );
+
+    vector <string> files;
+    string current_file;
+    while( file >> current_file ) files.push_back( current_file );
+
+    return files;
 }
 
 #endif
