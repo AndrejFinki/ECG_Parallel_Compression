@@ -6,18 +6,27 @@ using namespace std;
 
 #include "mpi_handler.hpp"
 #include "timer.hpp"
+#include "compression.hpp"
 
 int main(
     int argc,
     char ** argv
 ) {
+    const string file_name = argv[1];
+    const string file_name_data = "../ECG_Parallel_Compression/data/" + file_name;
+    const string file_name_output = "../ECG_Parallel_Compression/output/" + file_name;
+
     MPI_Handler::mpi_init();
 
-    Timer *timer = ( MPI_Handler::get_rank() ? nullptr : new Timer( "ECG Total Compression Time" ) );
+    if( !MPI_Handler::get_rank() ) Compression::print_parameters( file_name, MPI_Handler::get_size() );
 
-    MPI_Handler::run( argv[1] );
+    Timer *timer_compression = ( MPI_Handler::get_rank() ? nullptr : new Timer( "ECG Total Compression Time" ) );
 
-    delete timer;
+    MPI_Handler::run( file_name_data, file_name_output );
+
+    delete timer_compression;
+
+    if( !MPI_Handler::get_rank() ) Compression::verify_compression( Data_Handler( file_name_data ).read(), Data_Handler( file_name_output ).read() );
 
     MPI_Handler::mpi_finalize();
 }

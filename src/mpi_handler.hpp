@@ -14,7 +14,7 @@ public:
 
     MPI_Handler() = default;
 
-    static void run( const string & );
+    static void run( const string &, const string & );
     static void mpi_init();
     static void mpi_finalize();
     static int get_rank();
@@ -23,16 +23,17 @@ public:
 };
 
 void MPI_Handler::run(
-    const string &file_name
+    const string &file_name_data,
+    const string &file_name_output
 ) {
     switch( MPI_Handler::get_rank() )
     {
         case 0: {
-            DataHandler *input = new DataHandler( "../ECG_Parallel_Compression/data/" + file_name );
+            Data_Handler *input = new Data_Handler( file_name_data );
             const vector <int> * data = input->read();
 
-            DataHandler *output = new DataHandler( "../ECG_Parallel_Compression/output/" + file_name );
-            const vector <int> compressed_data = ECGProcess::main_process( data, MPI_Handler::get_size() );
+            Data_Handler *output = new Data_Handler( file_name_output );
+            const vector <int> compressed_data = ECG_Process::main_process( data, MPI_Handler::get_size() );
             output->write( &compressed_data );
 
             delete input;
@@ -41,7 +42,7 @@ void MPI_Handler::run(
         }
 
         default: {
-            ECGProcess::secondary_process();
+            ECG_Process::secondary_process();
         }
     }
 }
@@ -49,7 +50,7 @@ void MPI_Handler::run(
 void MPI_Handler::mpi_init()
 {
     int argc = 1;
-    char *argv = "/workspaces/ECG_Parallel_Compression/src/driver";
+    char *argv;
     char **argv1 = &argv;
     MPI_Init( &argc, &argv1 );
 }
