@@ -103,7 +103,7 @@ void Compression::print_parameters(
     const string &file,
     const int &size
 ) {
-    cout << "Running compression on file: " << file << " with " << size << " processes." << endl;;
+    cout << "Running compression on file " << file << " with " << size << " processes." << endl;;
     cout << "Bits for compression difference: " << COMPRESSION_DIFFERENCE_BITS << endl;
     cout << "\tThis allows for maximum difference of " << COMPRESSION_DIFFERENCE_LIMIT << endl;
     cout << "Bits for uncompressed values: " << UNCOMPRESSED_VALUE_BITS << endl;
