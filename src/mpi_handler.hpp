@@ -49,7 +49,7 @@ void MPI_Handler::run(
 void MPI_Handler::mpi_init()
 {
     int argc = 1;
-    char *argv = "/workspaces/ECG_Parallel_Compression/src/driver";
+    char *argv;
     char **argv1 = &argv;
     MPI_Init( &argc, &argv1 );
 }
