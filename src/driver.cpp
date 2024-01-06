@@ -12,6 +12,9 @@ int main(
     int argc,
     char ** argv
 ) {
+    const string file_name = argv[1];
+    const string file_name_data = "../ECG_Parallel_Compression/data/" + file_name;
+    const string file_name_output = "../ECG_Parallel_Compression/output/" + file_name;
 
     MPI_Handler::mpi_init();
 
@@ -19,7 +22,7 @@ int main(
 
     Timer *timer_compression = ( MPI_Handler::get_rank() ? nullptr : new Timer( "ECG Total Compression Time" ) );
 
-    MPI_Handler::run( argv[1] );
+    MPI_Handler::run( file_name_data, file_name_output );
 
     delete timer_compression;
 
