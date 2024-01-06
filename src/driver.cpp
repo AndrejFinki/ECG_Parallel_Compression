@@ -11,7 +11,7 @@ int main(
     int argc,
     char ** argv
 ) {
-    Timer *timer = new Timer( "ECG Compression Time" );
+    Timer *timer = new Timer( "ECG Total Compression Time" );
 
     MPI_Handler::mpi_init();
 
