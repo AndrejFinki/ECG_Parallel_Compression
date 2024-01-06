@@ -124,11 +124,8 @@ void Compression::verify_compression(
 
     cout << "Original ECG size: " << original->size() << endl;
     cout << "Compressed ECG size: " << compressed.size() << endl;
-
-    if( original->size() != compressed.size() ) {
-        cout << "Warning! Original and uncompressed size does not match. (" << original->size() << " != " << compressed.size() << ")." << endl;
-    }
-
+    
+    assert( original->size() == compressed.size() && "Verification failed! Original and compressed vector's size doesn't match." );
     for( int i = 0 ; i < compressed.size() ; i++ ) {
         assert( original->at(i) == compressed[i] && "Verification failed! Original and compressed vectors don't match." );
     }
