@@ -1,0 +1,15 @@
+-[ 4 Processes ]-
+100.ecg - Average time per run: 3304 ms.
+119.ecg - Average time per run: 3426 ms.
+
+-[ 3 Processes ]-
+100.ecg - Average time per run: 2710 ms.
+119.ecg - Average time per run: 2695 ms.
+
+-[ 2 Processes ]-
+100.ecg - Average time per run: 1774 ms.
+119.ecg - Average time per run: 1762 ms.
+
+-[ 1 Process ]-
+100.ecg - Average time per run: 1641 ms.
+119.ecg - Average time per run: 1509 ms.
