@@ -26,5 +26,7 @@ int main(
 
     delete timer_compression;
 
+    if( !MPI_Handler::get_rank() ) Compression::verify_compression( Data_Handler( file_name_data ).read(), Data_Handler( file_name_output ).read() );
+
     MPI_Handler::mpi_finalize();
 }

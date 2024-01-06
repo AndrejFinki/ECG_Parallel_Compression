@@ -18,6 +18,7 @@ public:
     static void inplace_compress( vector <int> & );
     static void inplace_decompress( vector <int> & );
     static void print_parameters( const string &, const int & );
+    static void verify_compression( const vector <int> *, const vector <int> * );
 
 private:
 
@@ -108,6 +109,29 @@ void Compression::print_parameters(
     cout << "\tThis allows for maximum difference of " << COMPRESSION_DIFFERENCE_LIMIT << endl;
     cout << "Bits for uncompressed values: " << UNCOMPRESSED_VALUE_BITS << endl;
     cout << "\tThis allows for maximum value of " << UNCOMPRESSED_VALUE_LIMIT << endl;
+}
+
+void Compression::verify_compression(
+    const vector <int> * original,
+    const vector <int> * compressed_ptr
+) {
+    vector <int> compressed;
+    for( int i = 0 ; i < compressed_ptr->size() ; i++ ) {
+        compressed.push_back( compressed_ptr->at(i) );
+    }
+
+    inplace_decompress( compressed );
+
+    cout << "Original ECG size: " << original->size() << endl;
+    cout << "Compressed ECG size: " << compressed.size() << endl;
+
+    if( original->size() != compressed.size() ) {
+        cout << "Warning! Original and uncompressed size does not match. (" << original->size() << " != " << compressed.size() << ")." << endl;
+    }
+
+    for( int i = 0 ; i < compressed.size() ; i++ ) {
+        assert( original->at(i) == compressed[i] && "Verification failed! Original and compressed vectors don't match." );
+    }
 }
 
 #endif
