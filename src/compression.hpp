@@ -17,6 +17,7 @@ public:
 
     static void inplace_compress( vector <int> & );
     static void inplace_decompress( vector <int> & );
+    static void print_parameters( const string &, const int & );
 
 private:
 
@@ -96,6 +97,17 @@ int Compression::decode_difference_big(
     bitset <( COMPRESSION_DIFFERENCE_BITS + UNCOMPRESSED_VALUE_BITS )> encoded_difference( value );
     encoded_difference.reset( COMPRESSION_DIFFERENCE_BITS + UNCOMPRESSED_VALUE_BITS - 1 );
     return ( int )( encoded_difference.to_ulong() );
+}
+
+void Compression::print_parameters(
+    const string &file,
+    const int &size
+) {
+    cout << "Running compression on file: " << file << " with " << size << " processes." << endl;;
+    cout << "Bits for compression difference: " << COMPRESSION_DIFFERENCE_BITS << endl;
+    cout << "\tThis allows for maximum difference of " << COMPRESSION_DIFFERENCE_LIMIT << endl;
+    cout << "Bits for uncompressed values: " << UNCOMPRESSED_VALUE_BITS << endl;
+    cout << "\tThis allows for maximum value of " << UNCOMPRESSED_VALUE_LIMIT << endl;
 }
 
 #endif

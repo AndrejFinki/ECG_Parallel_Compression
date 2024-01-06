@@ -6,18 +6,22 @@ using namespace std;
 
 #include "mpi_handler.hpp"
 #include "timer.hpp"
+#include "compression.hpp"
 
 int main(
     int argc,
     char ** argv
 ) {
+
     MPI_Handler::mpi_init();
 
-    Timer *timer = ( MPI_Handler::get_rank() ? nullptr : new Timer( "ECG Total Compression Time" ) );
+    if( !MPI_Handler::get_rank() ) Compression::print_parameters( argv[1], MPI_Handler::get_size() );
+
+    Timer *timer_compression = ( MPI_Handler::get_rank() ? nullptr : new Timer( "ECG Total Compression Time" ) );
 
     MPI_Handler::run( argv[1] );
 
-    delete timer;
+    delete timer_compression;
 
     MPI_Handler::mpi_finalize();
 }
