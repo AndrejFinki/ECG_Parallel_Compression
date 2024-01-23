@@ -10,7 +10,7 @@ using namespace std;
 
 const string data_dir = "../ECG_Parallel_Compression/data/";
 const string output_dir = "../ECG_Parallel_Compression/output/";
-const int runs_per_file = 50;
+const int runs_per_file = 3;
 
 int main(
     int argc,
