@@ -8,17 +8,18 @@ using namespace std;
 #include "compression.hpp"
 
 class ECG_Process {
-
 public:
-
-    ECG_Process() = default;
-
-    static vector <int> main_process( const vector <int> *, const int & );
-    static void secondary_process();
-
+    virtual vector <int> main_process( const vector <int> *, const int & ) = 0;
+    virtual void secondary_process() = 0;
 };
 
-vector <int> ECG_Process::main_process(
+class ECG_Process_Method_1 : public ECG_Process {
+public:
+    vector <int> main_process( const vector <int> *, const int & );
+    void secondary_process();
+};
+
+vector <int> ECG_Process_Method_1::main_process(
     const vector <int> * data,
     const int &size
 ) {
@@ -47,7 +48,7 @@ vector <int> ECG_Process::main_process(
     return sq_data;
 }
 
-void ECG_Process::secondary_process()
+void ECG_Process_Method_1::secondary_process()
 {
     int data_per_process;
     MPI_Bcast( &data_per_process, 1, MPI_INT, 0, MPI_COMM_WORLD );
