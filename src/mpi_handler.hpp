@@ -26,15 +26,14 @@ void MPI_Handler::run(
     const string &file_name_data,
     const string &file_name_output
 ) {
-    ECG_Process *process = new ECG_Process_Method_1( MPI_Handler::get_rank() );
+    ECG_Process *process = new ECG_Process_Method_1( MPI_Handler::get_rank(), MPI_Handler::get_size() );
     process->set_input( file_name_data );
     process->set_output( file_name_output );
 
     switch( MPI_Handler::get_rank() )
     {
         case 0: {
-            vector <int> compressed_data = process->main_process( process->get_input(), MPI_Handler::get_size() );
-            process->write_output( &compressed_data ); 
+            process->main_process();
             break;
         }
 
