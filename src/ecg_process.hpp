@@ -6,17 +6,52 @@
 using namespace std;
 
 #include "compression.hpp"
+#include "data_handler.hpp"
 
 class ECG_Process {
 public:
+    ECG_Process() = default;
+    ~ECG_Process(){ delete input; delete output; }
     virtual vector <int> main_process( const vector <int> *, const int & ) = 0;
     virtual void secondary_process() = 0;
+    void set_input( const string & );
+    void set_output( const string & );
+    const vector <int> * get_input();
+    void write_output( vector <int> * );
+protected:
+    Data_Handler *input = nullptr;
+    Data_Handler *output = nullptr;
 };
+
+void ECG_Process::set_input(
+    const string &input_path
+) {
+    input = new Data_Handler( input_path );
+}
+
+void ECG_Process::set_output(
+    const string &output_path
+) {
+    output = new Data_Handler( output_path );
+}
+
+const vector <int> * ECG_Process::get_input()
+{
+    return input->read();
+}
+
+void ECG_Process::write_output(
+    vector <int> * compressed_data
+) {
+    output->write( compressed_data );
+}
 
 class ECG_Process_Method_1 : public ECG_Process {
 public:
+    ECG_Process_Method_1( int _rank ) : rank(_rank) {};
     vector <int> main_process( const vector <int> *, const int & );
     void secondary_process();
+    const int rank;
 };
 
 vector <int> ECG_Process_Method_1::main_process(
@@ -63,8 +98,10 @@ void ECG_Process_Method_1::secondary_process()
 
 class ECG_Process_Method_2 : public ECG_Process {
 public:
+    ECG_Process_Method_2( int _rank ) : rank(_rank) {};
     vector <int> main_process( const vector <int> *, const int & );
     void secondary_process();
+    const int rank;
 };
 
 vector <int> ECG_Process_Method_2::main_process(
