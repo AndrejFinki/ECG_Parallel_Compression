@@ -9,18 +9,25 @@ using namespace std;
 #include "data_handler.hpp"
 
 class ECG_Process {
+
 public:
+
     ECG_Process() = default;
     ~ECG_Process(){ delete input; delete output; }
+
     virtual void main_process() = 0;
     virtual void secondary_process() = 0;
+
     void set_input( const string & );
     void set_output( const string & );
     const vector <int> * get_input();
     void write_output( vector <int> * );
+
 protected:
+
     Data_Handler *input = nullptr;
     Data_Handler *output = nullptr;
+
 };
 
 void ECG_Process::set_input(
@@ -47,10 +54,14 @@ void ECG_Process::write_output(
 }
 
 class ECG_Process_Method_1 : public ECG_Process {
+
 public:
+
     ECG_Process_Method_1( int _rank, int _size ) : rank( _rank ), size( _size ) {};
+
     void main_process();
     void secondary_process();
+    
     const int rank, size;
 };
 

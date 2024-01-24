@@ -16,7 +16,6 @@ int main(
     int argc,
     char ** argv
 ) {
-
     MPI_Handler::mpi_init();
 
     if( !MPI_Handler::get_rank() ) Compression::print_parameters( "*", MPI_Handler::get_size(), true );
