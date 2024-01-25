@@ -54,11 +54,11 @@ void ECG_Process::write_output(
     output->write( compressed_data );
 }
 
-class ECG_Process_Method_1 : public ECG_Process {
+class ECG_Process_Standard : public ECG_Process {
 
 public:
 
-    ECG_Process_Method_1( int _rank, int _size ) : rank( _rank ), size( _size ) {};
+    ECG_Process_Standard( int _rank, int _size ) : rank( _rank ), size( _size ) {};
 
     vector <Timer *> main_process();
     void secondary_process();
@@ -66,8 +66,63 @@ public:
     const int rank, size;
 };
 
-/* TODO: Move this timed method into its own class */
-vector <Timer *> ECG_Process_Method_1::main_process()
+vector <Timer *> ECG_Process_Standard::main_process()
+{
+    const vector <int> * data = this->get_input();
+
+    int data_per_process = data->size() / this->size;
+    MPI_Bcast( &data_per_process, 1, MPI_INT, 0, MPI_COMM_WORLD );
+
+    vector <int> pdata( data_per_process );
+    MPI_Scatter( data->data(), data_per_process, MPI_INT, pdata.data(), data_per_process, MPI_INT, 0, MPI_COMM_WORLD );
+
+    Compression::inplace_compress( pdata );
+
+    vector <int> sq_data( data_per_process * this->size );
+    MPI_Gather( pdata.data(), data_per_process, MPI_INT, sq_data.data(), data_per_process, MPI_INT, 0, MPI_COMM_WORLD );
+
+    if( data_per_process * this->size != data->size() ) {
+        vector <int> extra_data;
+        for( int i = data_per_process * this->size ; i < data->size() ; i++ ) {
+            extra_data.push_back( data->at(i) );
+        }
+        Compression::inplace_compress( extra_data );
+        for( int &i : extra_data ) {
+            sq_data.push_back( i );
+        }
+    }
+
+    this->write_output( &sq_data );
+
+    return vector <Timer *> ();
+}
+
+void ECG_Process_Standard::secondary_process()
+{
+    int data_per_process;
+    MPI_Bcast( &data_per_process, 1, MPI_INT, 0, MPI_COMM_WORLD );
+
+    vector <int> pdata( data_per_process );
+    MPI_Scatter( NULL, 0, MPI_INT, pdata.data(), data_per_process, MPI_INT, 0, MPI_COMM_WORLD );
+
+    Compression::inplace_compress( pdata );
+    
+    MPI_Gather( pdata.data(), data_per_process, MPI_INT, NULL, 0, MPI_INT, 0, MPI_COMM_WORLD );
+}
+
+class ECG_Process_Timers : public ECG_Process {
+
+public:
+
+    ECG_Process_Timers( int _rank, int _size ) : rank( _rank ), size( _size ) {};
+
+    vector <Timer *> main_process();
+    void secondary_process();
+    
+    const int rank, size;
+};
+
+vector <Timer *> ECG_Process_Timers::main_process()
 {
     vector <Timer *> main_timers;
 
@@ -114,7 +169,7 @@ vector <Timer *> ECG_Process_Method_1::main_process()
     return main_timers;
 }
 
-void ECG_Process_Method_1::secondary_process()
+void ECG_Process_Timers::secondary_process()
 {
     int data_per_process;
     MPI_Bcast( &data_per_process, 1, MPI_INT, 0, MPI_COMM_WORLD );
