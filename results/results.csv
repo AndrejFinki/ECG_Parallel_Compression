@@ -6,13 +6,13 @@ Test    ,Machine    ,1      ,2      ,4      ,8      ,12
 18MB.ecg,2-core     ,665    ,997    ,1904   ,3541   ,5122
 36MB.ecg,2-core     ,1278   ,1955   ,3578   ,7062   ,10052
 72MB.ecg,2-core     ,2664   ,3916   ,7134   ,13641  ,20199
-1MB.ecg ,4-core     ,
-2MB.ecg ,4-core     ,
-4MB.ecg ,4-core     ,
-9MB.ecg ,4-core     ,
-18MB.ecg,4-core     ,
-36MB.ecg,4-core     ,
-72MB.ecg,4-core     ,
+1MB.ecg ,4-core     ,33     ,30     ,53     ,109    ,165
+2MB.ecg ,4-core     ,70     ,60     ,102    ,209    ,327
+4MB.ecg ,4-core     ,132    ,122    ,217    ,385    ,594
+9MB.ecg ,4-core     ,268    ,249    ,424    ,805    ,1189
+18MB.ecg,4-core     ,553    ,497    ,858    ,1538   ,2458
+36MB.ecg,4-core     ,1084   ,991    ,1711   ,3167   ,4721
+72MB.ecg,4-core     ,2161   ,1964   ,3341   ,6240   ,9404
 1MB.ecg ,i5-12450H  ,
 2MB.ecg ,i5-12450H  ,
 4MB.ecg ,i5-12450H  ,
