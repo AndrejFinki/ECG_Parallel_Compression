@@ -66,6 +66,7 @@ public:
     const int rank, size;
 };
 
+/* TODO: Move this timed method into its own class */
 vector <Timer *> ECG_Process_Method_1::main_process()
 {
     vector <Timer *> main_timers;
