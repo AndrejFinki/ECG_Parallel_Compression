@@ -34,15 +34,23 @@ int main(
 
         for( int run = 1 ; run <= runs_per_file ; run++ ) {
 
-            Timer *timer_compression = ( MPI_Handler::get_rank() ? nullptr : new Timer( "", false ) );
+            Timer *total_timer = new Timer( "Total time" );
 
-            MPI_Handler::run( file_name_data, file_name_output );
+            vector <Timer *> run_timers = MPI_Handler::run( file_name_data, file_name_output );
 
             MPI_Handler::sync();
 
-            if( !MPI_Handler::get_rank() ) total_time += timer_compression->check();
+            total_timer->stop();
 
-            delete timer_compression;
+            run_timers.insert( run_timers.begin(), total_timer );
+
+            if( !MPI_Handler::get_rank() ) {
+                total_time += run_timers.front()->check();
+                for( Timer * t : run_timers ) {
+                    t->display();
+                    delete t;
+                }
+            }
 
             if( !MPI_Handler::get_rank() ) Compression::verify_compression( Data_Handler( file_name_data ).read(), Data_Handler( file_name_output ).read() );
         
