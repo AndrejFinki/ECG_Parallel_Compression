@@ -23,8 +23,8 @@ public:
 };
 
 void MPI_Handler::run(
-    const string &file_name_data,
-    const string &file_name_output
+    const string & file_name_data,
+    const string & file_name_output
 ) {
     ECG_Process *process = new ECG_Process_Method_1( MPI_Handler::get_rank(), MPI_Handler::get_size() );
     process->set_input( file_name_data );

@@ -31,13 +31,13 @@ protected:
 };
 
 void ECG_Process::set_input(
-    const string &input_path
+    const string & input_path
 ) {
     input = new Data_Handler( input_path );
 }
 
 void ECG_Process::set_output(
-    const string &output_path
+    const string & output_path
 ) {
     output = new Data_Handler( output_path );
 }

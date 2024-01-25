@@ -9,7 +9,7 @@ class Timer {
 public:
     
     Timer(
-        const string &name,
+        const string & name,
         bool print_on_destroy_arg = true
     ) {
         timer_name = name;
@@ -28,6 +28,7 @@ public:
     }
 
     int check();
+    string get_name();
 
 private:
 
@@ -43,6 +44,11 @@ int Timer::check()
     end_time = chrono::high_resolution_clock::now();
     int ms_elapsed = chrono::duration_cast <chrono::milliseconds> ( end_time - start_time ).count();
     return ms_elapsed;
+}
+
+string Timer::get_name()
+{
+    return this->timer_name;
 }
 
 #endif
