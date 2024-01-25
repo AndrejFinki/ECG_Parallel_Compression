@@ -50,7 +50,7 @@ void Data_Handler::write(
     assert( file && "Output file write failed!" );
 
     for( int i = 0 ; i < data->size() ; i++ ) {
-        file << data->at(i) << endl;
+        file << data->at(i) << '\n';
     }
 
     file.close();
