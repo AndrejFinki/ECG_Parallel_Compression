@@ -30,15 +30,13 @@ vector <Timer *> MPI_Handler::run(
     ECG_Process *process = new ECG_Process_Standard( MPI_Handler::get_rank(), MPI_Handler::get_size() );
     process->set_input( file_name_data );
     process->set_output( file_name_output );
+
     vector <Timer *> run_timers;
 
     switch( MPI_Handler::get_rank() )
     {
         case 0: {
-            run_timers.push_back( new Timer( "Main Process Timer" ) );
-            vector <Timer *> main_process_timers = process->main_process();
-            for( Timer *t : main_process_timers ) run_timers.push_back( t );
-            run_timers.front()->stop();
+            run_timers = process->main_process();
             break;
         }
 
