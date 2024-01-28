@@ -27,7 +27,7 @@ vector <Timer *> MPI_Handler::run(
     const string & file_name_data,
     const string & file_name_output
 ) {
-    ECG_Process *process = new ECG_Process_Standard( MPI_Handler::get_rank(), MPI_Handler::get_size() );
+    ECG_Process *process = new ECG_Process_Exclude_IO( MPI_Handler::get_rank(), MPI_Handler::get_size() );
     process->set_input( file_name_data );
     process->set_output( file_name_output );
 

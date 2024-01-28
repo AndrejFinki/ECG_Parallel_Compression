@@ -43,7 +43,6 @@ int main(
             if( !MPI_Handler::get_rank() ) {
                 for( Timer * t : run_timers ) {
                     total_time += t->check();
-                    t->display();
                     delete t;
                 }
             }
