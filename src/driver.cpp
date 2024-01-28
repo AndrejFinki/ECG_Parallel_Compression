@@ -34,19 +34,15 @@ int main(
 
         for( int run = 1 ; run <= runs_per_file ; run++ ) {
 
-            Timer *total_timer = new Timer( "Total time" );
+            MPI_Handler::sync();
 
             vector <Timer *> run_timers = MPI_Handler::run( file_name_data, file_name_output );
 
             MPI_Handler::sync();
 
-            total_timer->stop();
-
-            run_timers.insert( run_timers.begin(), total_timer );
-
             if( !MPI_Handler::get_rank() ) {
-                total_time += run_timers.front()->check();
                 for( Timer * t : run_timers ) {
+                    total_time += t->check();
                     delete t;
                 }
             }

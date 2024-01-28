@@ -54,6 +54,8 @@ void ECG_Process::write_output(
     output->write( compressed_data );
 }
 
+
+
 class ECG_Process_Standard : public ECG_Process {
 
 public:
@@ -68,6 +70,9 @@ public:
 
 vector <Timer *> ECG_Process_Standard::main_process()
 {
+    vector <Timer *> main_timers;
+    main_timers.push_back( new Timer( "Main process" ) );
+
     const vector <int> * data = this->get_input();
 
     int data_per_process = data->size() / this->size;
@@ -94,7 +99,8 @@ vector <Timer *> ECG_Process_Standard::main_process()
 
     this->write_output( &sq_data );
 
-    return vector <Timer *> ();
+    main_timers.front()->stop();
+    return main_timers;
 }
 
 void ECG_Process_Standard::secondary_process()
@@ -109,6 +115,8 @@ void ECG_Process_Standard::secondary_process()
     
     MPI_Gather( pdata.data(), data_per_process, MPI_INT, NULL, 0, MPI_INT, 0, MPI_COMM_WORLD );
 }
+
+
 
 class ECG_Process_Timers : public ECG_Process {
 
@@ -126,30 +134,30 @@ vector <Timer *> ECG_Process_Timers::main_process()
 {
     vector <Timer *> main_timers;
 
-    main_timers.push_back( new Timer( "Input timer" ) );
+    main_timers.push_back( new Timer( "Input" ) );
     const vector <int> * data = this->get_input();
     main_timers.back()->stop();
 
-    main_timers.push_back( new Timer( "Data_per_process timer" ) );
+    main_timers.push_back( new Timer( "Data_per_process" ) );
     int data_per_process = data->size() / this->size;
     MPI_Bcast( &data_per_process, 1, MPI_INT, 0, MPI_COMM_WORLD );
     main_timers.back()->stop();
 
-    main_timers.push_back( new Timer( "Scatter timer" ) );
+    main_timers.push_back( new Timer( "Scatter" ) );
     vector <int> pdata( data_per_process );
     MPI_Scatter( data->data(), data_per_process, MPI_INT, pdata.data(), data_per_process, MPI_INT, 0, MPI_COMM_WORLD );
     main_timers.back()->stop();
 
-    main_timers.push_back( new Timer( "Compression timer" ) );
+    main_timers.push_back( new Timer( "Compression" ) );
     Compression::inplace_compress( pdata );
     main_timers.back()->stop();
 
-    main_timers.push_back( new Timer( "Gather timer" ) );
+    main_timers.push_back( new Timer( "Gather" ) );
     vector <int> sq_data( data_per_process * this->size );
     MPI_Gather( pdata.data(), data_per_process, MPI_INT, sq_data.data(), data_per_process, MPI_INT, 0, MPI_COMM_WORLD );
     main_timers.back()->stop();
 
-    main_timers.push_back( new Timer( "Extra data timer" ) );
+    main_timers.push_back( new Timer( "Extra data" ) );
     if( data_per_process * this->size != data->size() ) {
         vector <int> extra_data;
         for( int i = data_per_process * this->size ; i < data->size() ; i++ ) {
@@ -162,7 +170,7 @@ vector <Timer *> ECG_Process_Timers::main_process()
     }
     main_timers.back()->stop();
 
-    main_timers.push_back( new Timer( "Output timer" ) );
+    main_timers.push_back( new Timer( "Output" ) );
     this->write_output( &sq_data );
     main_timers.back()->stop();
 
@@ -170,6 +178,76 @@ vector <Timer *> ECG_Process_Timers::main_process()
 }
 
 void ECG_Process_Timers::secondary_process()
+{
+    int data_per_process;
+    MPI_Bcast( &data_per_process, 1, MPI_INT, 0, MPI_COMM_WORLD );
+
+    vector <int> pdata( data_per_process );
+    MPI_Scatter( NULL, 0, MPI_INT, pdata.data(), data_per_process, MPI_INT, 0, MPI_COMM_WORLD );
+
+    Compression::inplace_compress( pdata );
+    
+    MPI_Gather( pdata.data(), data_per_process, MPI_INT, NULL, 0, MPI_INT, 0, MPI_COMM_WORLD );
+}
+
+
+
+class ECG_Process_Exclude_IO : public ECG_Process {
+
+public:
+
+    ECG_Process_Exclude_IO( int _rank, int _size ) : rank( _rank ), size( _size ) {};
+
+    vector <Timer *> main_process();
+    void secondary_process();
+    
+    const int rank, size;
+};
+
+vector <Timer *> ECG_Process_Exclude_IO::main_process()
+{
+    vector <Timer *> main_timers;
+
+    const vector <int> * data = this->get_input();
+
+    main_timers.push_back( new Timer( "Data_per_process" ) );
+    int data_per_process = data->size() / this->size;
+    MPI_Bcast( &data_per_process, 1, MPI_INT, 0, MPI_COMM_WORLD );
+    main_timers.back()->stop();
+
+    main_timers.push_back( new Timer( "Scatter" ) );
+    vector <int> pdata( data_per_process );
+    MPI_Scatter( data->data(), data_per_process, MPI_INT, pdata.data(), data_per_process, MPI_INT, 0, MPI_COMM_WORLD );
+    main_timers.back()->stop();
+
+    main_timers.push_back( new Timer( "Compression" ) );
+    Compression::inplace_compress( pdata );
+    main_timers.back()->stop();
+
+    main_timers.push_back( new Timer( "Gather" ) );
+    vector <int> sq_data( data_per_process * this->size );
+    MPI_Gather( pdata.data(), data_per_process, MPI_INT, sq_data.data(), data_per_process, MPI_INT, 0, MPI_COMM_WORLD );
+    main_timers.back()->stop();
+
+    main_timers.push_back( new Timer( "Extra data" ) );
+    if( data_per_process * this->size != data->size() ) {
+        vector <int> extra_data;
+        for( int i = data_per_process * this->size ; i < data->size() ; i++ ) {
+            extra_data.push_back( data->at(i) );
+        }
+        Compression::inplace_compress( extra_data );
+        for( int &i : extra_data ) {
+            sq_data.push_back( i );
+        }
+    }
+    main_timers.back()->stop();
+
+    this->write_output( &sq_data );
+
+    return main_timers;
+}
+
+void ECG_Process_Exclude_IO::secondary_process()
 {
     int data_per_process;
     MPI_Bcast( &data_per_process, 1, MPI_INT, 0, MPI_COMM_WORLD );
