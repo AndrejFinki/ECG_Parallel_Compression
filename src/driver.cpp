@@ -28,8 +28,6 @@ int main(
         const string file_name_data = data_dir + file_name;
         const string file_name_output = output_dir + file_name;
 
-        if( !MPI_Handler::get_rank() ) Compression::print_parameters( file_name, MPI_Handler::get_size() );
-
         int total_time = 0;
 
         for( int run = 1 ; run <= runs_per_file ; run++ ) {
