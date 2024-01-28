@@ -36,6 +36,8 @@ int main(
 
             Timer *total_timer = new Timer( "Total time" );
 
+            MPI_Handler::sync();
+
             vector <Timer *> run_timers = MPI_Handler::run( file_name_data, file_name_output );
 
             MPI_Handler::sync();
