@@ -229,7 +229,6 @@ vector <Timer *> ECG_Process_Exclude_IO::main_process()
     MPI_Gather( pdata.data(), data_per_process, MPI_INT, sq_data.data(), data_per_process, MPI_INT, 0, MPI_COMM_WORLD );
     main_timers.back()->stop();
 
-    main_timers.push_back( new Timer( "Extra data" ) );
     if( data_per_process * this->size != data->size() ) {
         vector <int> extra_data;
         for( int i = data_per_process * this->size ; i < data->size() ; i++ ) {
@@ -240,7 +239,6 @@ vector <Timer *> ECG_Process_Exclude_IO::main_process()
             sq_data.push_back( i );
         }
     }
-    main_timers.back()->stop();
 
     this->write_output( &sq_data );
 

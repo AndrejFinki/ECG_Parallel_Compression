@@ -1,7 +1,7 @@
 #!/bin/bash
 /usr/bin/mpicxx -o src/driver src/driver.cpp
 
-a=1
+a=4
 while [ $a -le 8 ]
 do
     /usr/bin/mpirun --oversubscribe -np $a src/driver
