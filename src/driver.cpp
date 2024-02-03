@@ -10,7 +10,7 @@ using namespace std;
 
 const string data_dir = "../ECG_Parallel_Compression/data/";
 const string output_dir = "../ECG_Parallel_Compression/output/";
-const int runs_per_file = 25;
+const int runs_per_file = 3;
 
 int main(
     int argc,
@@ -27,8 +27,6 @@ int main(
         const string file_name = ecg_file;
         const string file_name_data = data_dir + file_name;
         const string file_name_output = output_dir + file_name;
-
-        if( !MPI_Handler::get_rank() ) Compression::print_parameters( file_name, MPI_Handler::get_size() );
 
         int total_time = 0;
 
