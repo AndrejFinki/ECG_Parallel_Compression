@@ -1,5 +1,4 @@
 Running compression on file * with 1 processes.
-
 1MB.ecg - Average time per run: 8 ms.
 2MB.ecg - Average time per run: 14 ms.
 4MB.ecg - Average time per run: 33 ms.
@@ -7,9 +6,7 @@ Running compression on file * with 1 processes.
 18MB.ecg - Average time per run: 135 ms.
 36MB.ecg - Average time per run: 276 ms.
 72MB.ecg - Average time per run: 611 ms.
-
 Running compression on file * with 2 processes.
-
 1MB.ecg - Average time per run: 10 ms.
 2MB.ecg - Average time per run: 14 ms.
 4MB.ecg - Average time per run: 28 ms.
@@ -17,9 +14,7 @@ Running compression on file * with 2 processes.
 18MB.ecg - Average time per run: 114 ms.
 36MB.ecg - Average time per run: 232 ms.
 72MB.ecg - Average time per run: 480 ms.
-
 Running compression on file * with 3 processes.
-
 1MB.ecg - Average time per run: 9 ms.
 2MB.ecg - Average time per run: 19 ms.
 4MB.ecg - Average time per run: 36 ms.
@@ -27,9 +22,7 @@ Running compression on file * with 3 processes.
 18MB.ecg - Average time per run: 139 ms.
 36MB.ecg - Average time per run: 278 ms.
 72MB.ecg - Average time per run: 525 ms.
-
 Running compression on file * with 4 processes.
-
 1MB.ecg - Average time per run: 10 ms.
 2MB.ecg - Average time per run: 18 ms.
 4MB.ecg - Average time per run: 38 ms.
@@ -37,9 +30,7 @@ Running compression on file * with 4 processes.
 18MB.ecg - Average time per run: 134 ms.
 36MB.ecg - Average time per run: 254 ms.
 72MB.ecg - Average time per run: 507 ms.
-
 Running compression on file * with 5 processes.
-
 1MB.ecg - Average time per run: 13 ms.
 2MB.ecg - Average time per run: 22 ms.
 4MB.ecg - Average time per run: 47 ms.
@@ -47,9 +38,7 @@ Running compression on file * with 5 processes.
 18MB.ecg - Average time per run: 138 ms.
 36MB.ecg - Average time per run: 259 ms.
 72MB.ecg - Average time per run: 517 ms.
-
 Running compression on file * with 6 processes.
-
 1MB.ecg - Average time per run: 14 ms.
 2MB.ecg - Average time per run: 26 ms.
 4MB.ecg - Average time per run: 44 ms.
@@ -57,9 +46,7 @@ Running compression on file * with 6 processes.
 18MB.ecg - Average time per run: 144 ms.
 36MB.ecg - Average time per run: 271 ms.
 72MB.ecg - Average time per run: 554 ms.
-
 Running compression on file * with 7 processes.
-
 1MB.ecg - Average time per run: 16 ms.
 2MB.ecg - Average time per run: 24 ms.
 4MB.ecg - Average time per run: 49 ms.
@@ -67,9 +54,7 @@ Running compression on file * with 7 processes.
 18MB.ecg - Average time per run: 148 ms.
 36MB.ecg - Average time per run: 276 ms.
 72MB.ecg - Average time per run: 568 ms.
-
 Running compression on file * with 8 processes.
-
 1MB.ecg - Average time per run: 20 ms.
 2MB.ecg - Average time per run: 27 ms.
 4MB.ecg - Average time per run: 54 ms.
@@ -77,4 +62,3 @@ Running compression on file * with 8 processes.
 18MB.ecg - Average time per run: 154 ms.
 36MB.ecg - Average time per run: 298 ms.
 72MB.ecg - Average time per run: 608 ms.
-
