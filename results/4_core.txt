@@ -1,0 +1,240 @@
+Running compression on file * with 1 processes.
+Bits for compression difference: 3
+	This allows for maximum difference of 3
+Bits for uncompressed values: 10
+	This allows for maximum value of 1023
+
+01MB.ecg - Average time per run: 9 ms.
+
+02MB.ecg - Average time per run: 18 ms.
+
+04MB.ecg - Average time per run: 36 ms.
+
+09MB.ecg - Average time per run: 74 ms.
+
+18MB.ecg - Average time per run: 149 ms.
+
+36MB.ecg - Average time per run: 286 ms.
+
+72MB.ecg - Average time per run: 580 ms.
+
+Running compression on file * with 2 processes.
+Bits for compression difference: 3
+	This allows for maximum difference of 3
+Bits for uncompressed values: 10
+	This allows for maximum value of 1023
+
+01MB.ecg - Average time per run: 4 ms.
+
+02MB.ecg - Average time per run: 9 ms.
+
+04MB.ecg - Average time per run: 19 ms.
+
+09MB.ecg - Average time per run: 38 ms.
+
+18MB.ecg - Average time per run: 76 ms.
+
+36MB.ecg - Average time per run: 150 ms.
+
+72MB.ecg - Average time per run: 303 ms.
+
+Running compression on file * with 3 processes.
+Bits for compression difference: 3
+	This allows for maximum difference of 3
+Bits for uncompressed values: 10
+	This allows for maximum value of 1023
+
+01MB.ecg - Average time per run: 4 ms.
+
+02MB.ecg - Average time per run: 9 ms.
+
+04MB.ecg - Average time per run: 19 ms.
+
+09MB.ecg - Average time per run: 37 ms.
+
+18MB.ecg - Average time per run: 78 ms.
+
+36MB.ecg - Average time per run: 155 ms.
+
+72MB.ecg - Average time per run: 306 ms.
+
+Running compression on file * with 4 processes.
+Bits for compression difference: 3
+	This allows for maximum difference of 3
+Bits for uncompressed values: 10
+	This allows for maximum value of 1023
+
+01MB.ecg - Average time per run: 4 ms.
+
+02MB.ecg - Average time per run: 9 ms.
+
+04MB.ecg - Average time per run: 17 ms.
+
+09MB.ecg - Average time per run: 38 ms.
+
+18MB.ecg - Average time per run: 64 ms.
+
+36MB.ecg - Average time per run: 131 ms.
+
+72MB.ecg - Average time per run: 264 ms.
+
+Running compression on file * with 5 processes.
+Bits for compression difference: 3
+	This allows for maximum difference of 3
+Bits for uncompressed values: 10
+	This allows for maximum value of 1023
+
+01MB.ecg - Average time per run: 7 ms.
+
+02MB.ecg - Average time per run: 12 ms.
+
+04MB.ecg - Average time per run: 26 ms.
+
+09MB.ecg - Average time per run: 48 ms.
+
+18MB.ecg - Average time per run: 89 ms.
+
+36MB.ecg - Average time per run: 162 ms.
+
+72MB.ecg - Average time per run: 318 ms.
+
+Running compression on file * with 6 processes.
+Bits for compression difference: 3
+	This allows for maximum difference of 3
+Bits for uncompressed values: 10
+	This allows for maximum value of 1023
+
+01MB.ecg - Average time per run: 5 ms.
+
+02MB.ecg - Average time per run: 19 ms.
+
+04MB.ecg - Average time per run: 30 ms.
+
+09MB.ecg - Average time per run: 48 ms.
+
+18MB.ecg - Average time per run: 82 ms.
+
+36MB.ecg - Average time per run: 166 ms.
+
+72MB.ecg - Average time per run: 323 ms.
+
+Running compression on file * with 7 processes.
+Bits for compression difference: 3
+	This allows for maximum difference of 3
+Bits for uncompressed values: 10
+	This allows for maximum value of 1023
+
+01MB.ecg - Average time per run: 12 ms.
+
+02MB.ecg - Average time per run: 18 ms.
+
+04MB.ecg - Average time per run: 26 ms.
+
+09MB.ecg - Average time per run: 50 ms.
+
+18MB.ecg - Average time per run: 94 ms.
+
+36MB.ecg - Average time per run: 157 ms.
+
+72MB.ecg - Average time per run: 302 ms.
+
+Running compression on file * with 8 processes.
+Bits for compression difference: 3
+	This allows for maximum difference of 3
+Bits for uncompressed values: 10
+	This allows for maximum value of 1023
+
+01MB.ecg - Average time per run: 10 ms.
+
+02MB.ecg - Average time per run: 21 ms.
+
+04MB.ecg - Average time per run: 28 ms.
+
+09MB.ecg - Average time per run: 54 ms.
+
+18MB.ecg - Average time per run: 85 ms.
+
+36MB.ecg - Average time per run: 164 ms.
+
+72MB.ecg - Average time per run: 311 ms.
+
+Running compression on file * with 9 processes.
+Bits for compression difference: 3
+	This allows for maximum difference of 3
+Bits for uncompressed values: 10
+	This allows for maximum value of 1023
+
+01MB.ecg - Average time per run: 10 ms.
+
+02MB.ecg - Average time per run: 17 ms.
+
+04MB.ecg - Average time per run: 37 ms.
+
+09MB.ecg - Average time per run: 61 ms.
+
+18MB.ecg - Average time per run: 99 ms.
+
+36MB.ecg - Average time per run: 170 ms.
+
+72MB.ecg - Average time per run: 338 ms.
+
+Running compression on file * with 10 processes.
+Bits for compression difference: 3
+	This allows for maximum difference of 3
+Bits for uncompressed values: 10
+	This allows for maximum value of 1023
+
+01MB.ecg - Average time per run: 17 ms.
+
+02MB.ecg - Average time per run: 18 ms.
+
+04MB.ecg - Average time per run: 44 ms.
+
+09MB.ecg - Average time per run: 65 ms.
+
+18MB.ecg - Average time per run: 103 ms.
+
+36MB.ecg - Average time per run: 166 ms.
+
+72MB.ecg - Average time per run: 318 ms.
+
+Running compression on file * with 11 processes.
+Bits for compression difference: 3
+	This allows for maximum difference of 3
+Bits for uncompressed values: 10
+	This allows for maximum value of 1023
+
+01MB.ecg - Average time per run: 13 ms.
+
+02MB.ecg - Average time per run: 22 ms.
+
+04MB.ecg - Average time per run: 43 ms.
+
+09MB.ecg - Average time per run: 68 ms.
+
+18MB.ecg - Average time per run: 114 ms.
+
+36MB.ecg - Average time per run: 176 ms.
+
+72MB.ecg - Average time per run: 322 ms.
+
+Running compression on file * with 12 processes.
+Bits for compression difference: 3
+	This allows for maximum difference of 3
+Bits for uncompressed values: 10
+	This allows for maximum value of 1023
+
+01MB.ecg - Average time per run: 15 ms.
+
+02MB.ecg - Average time per run: 23 ms.
+
+04MB.ecg - Average time per run: 38 ms.
+
+09MB.ecg - Average time per run: 65 ms.
+
+18MB.ecg - Average time per run: 117 ms.
+
+36MB.ecg - Average time per run: 185 ms.
+
+72MB.ecg - Average time per run: 378 ms.
+

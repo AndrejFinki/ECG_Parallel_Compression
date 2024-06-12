@@ -8,15 +8,12 @@ class Data_Handler {
 
 public:
 
-    Data_Handler(
-        string file_path_arg
-    ) {
-        file_path = file_path_arg;
-    }
+    Data_Handler( const string & );
 
     const vector <int> * read();
     void write( const vector <int> * );
-    static vector <string> get_files_in_dir( const string & );
+    vector <int> * data();
+    static vector <string> get_files_in_dir( const string &, const string & );
 
 private:
 
@@ -24,6 +21,12 @@ private:
     vector <int> ecg_data;
 
 };
+
+Data_Handler::Data_Handler(
+    const string &file_path_arg
+) {
+    file_path = file_path_arg;
+}
 
 const vector <int> * Data_Handler::read()
 {
@@ -35,11 +38,12 @@ const vector <int> * Data_Handler::read()
     ecg_data.clear();
 
     int value;
-    while( file >> value ) ecg_data.push_back( value );
+    while( file >> value )
+        ecg_data.push_back( value );
 
     file.close();
 
-    return &ecg_data;
+    return & ecg_data;
 }
 
 void Data_Handler::write(
@@ -49,17 +53,21 @@ void Data_Handler::write(
 
     assert( file && "Output file write failed!" );
 
-    for( int i = 0 ; i < data->size() ; i++ ) {
+    for( int i = 0 ; i < data->size() ; i++ )
         file << data->at(i) << '\n';
-    }
 
     file.close();
 }
 
+vector <int> * Data_Handler::data()
+{
+    return & ecg_data;
+}
+
 vector <string> Data_Handler::get_files_in_dir(
-    const string & dir
+    const string & dir,
+    const string & temp_file_name = "files.tmp"
 ) {
-    const string temp_file_name = "files.tmp";
     string command = "ls " + dir + " > " + temp_file_name;
     system( command.c_str() );
 
@@ -70,7 +78,11 @@ vector <string> Data_Handler::get_files_in_dir(
 
     vector <string> files;
     string current_file;
-    while( file >> current_file ) files.push_back( current_file );
+    while( file >> current_file )
+        files.push_back( current_file );
+
+    command = "rm " + temp_file_name;
+    system( command.c_str() );
 
     return files;
 }
