@@ -21,7 +21,7 @@ int main(
     if( !MPI_Handler::get_rank() )
         Compression::print_parameters( "*", MPI_Handler::get_size(), true );
 
-    vector <string> ecg_files = Data_Handler::get_files_in_dir( data_dir );
+    vector <string> ecg_files = Data_Handler::get_files_in_dir( data_dir, "files_" + to_string( MPI_Handler::get_rank() ) );
 
     for( const string &ecg_file : ecg_files ) {
         const string file_name = ecg_file;

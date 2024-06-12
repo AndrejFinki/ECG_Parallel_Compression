@@ -13,7 +13,7 @@ public:
     const vector <int> * read();
     void write( const vector <int> * );
     vector <int> * data();
-    static vector <string> get_files_in_dir( const string & );
+    static vector <string> get_files_in_dir( const string &, const string & );
 
 private:
 
@@ -65,9 +65,9 @@ vector <int> * Data_Handler::data()
 }
 
 vector <string> Data_Handler::get_files_in_dir(
-    const string & dir
+    const string & dir,
+    const string & temp_file_name = "files.tmp"
 ) {
-    const string temp_file_name = "files.tmp";
     string command = "ls " + dir + " > " + temp_file_name;
     system( command.c_str() );
 
@@ -80,6 +80,9 @@ vector <string> Data_Handler::get_files_in_dir(
     string current_file;
     while( file >> current_file )
         files.push_back( current_file );
+
+    command = "rm " + temp_file_name;
+    system( command.c_str() );
 
     return files;
 }
