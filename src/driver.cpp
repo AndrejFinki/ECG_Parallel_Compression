@@ -4,9 +4,9 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#include "mpi_handler.hpp"
-#include "timer.hpp"
-#include "compression.hpp"
+#include "../headers/mpi_handler.hpp"
+#include "../headers/timer.hpp"
+#include "../headers/compression.hpp"
 
 const string data_dir = "../ECG_Parallel_Compression/data/";
 const string output_dir = "../ECG_Parallel_Compression/output/";
