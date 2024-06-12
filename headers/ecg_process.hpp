@@ -49,9 +49,6 @@ void ECG_Process_Fast::main_process(
 
     sq_data->resize( data_per_process * this->size );
     MPI_Gather( pdata.data(), data_per_process, MPI_INT, sq_data->data(), data_per_process, MPI_INT, 0, MPI_COMM_WORLD );
-    
-    for( int i = data_per_process * this->size ; i < data->size() ; i++ )
-        sq_data->push_back( Compression::safe_compress_value( data->at(i) ) );
 }
 
 void ECG_Process_Fast::secondary_process()

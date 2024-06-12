@@ -38,6 +38,8 @@ int main(
                 input_dh = new Data_Handler( file_name_data );
                 output_dh = new Data_Handler( file_name_output );
                 input_dh->read();
+                while( input_dh->data()->size() % MPI_Handler::get_size() )
+                    input_dh->data()->pop_back();
                 t = new Timer( "Global Timer" );
             }
             
