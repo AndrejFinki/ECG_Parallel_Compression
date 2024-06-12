@@ -12,6 +12,7 @@ public:
 
     const vector <int> * read();
     void write( const vector <int> * );
+    vector <int> * data();
     static vector <string> get_files_in_dir( const string & );
 
 private:
@@ -56,6 +57,11 @@ void Data_Handler::write(
     }
 
     file.close();
+}
+
+vector <int> * Data_Handler::data()
+{
+    return & ecg_data;
 }
 
 vector <string> Data_Handler::get_files_in_dir(

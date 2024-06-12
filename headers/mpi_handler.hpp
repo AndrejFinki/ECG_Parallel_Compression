@@ -14,7 +14,7 @@ public:
 
     MPI_Handler() = default;
 
-    static vector <Timer *> run( const string &, const string & );
+    static void run( const vector <int> *, vector <int> * );
     static void mpi_init();
     static void mpi_finalize();
     static int get_rank();
@@ -23,20 +23,16 @@ public:
 
 };
 
-vector <Timer *> MPI_Handler::run(
-    const string & file_name_data,
-    const string & file_name_output
+void MPI_Handler::run(
+    const vector <int> * input_data,
+    vector <int> * output_data
 ) {
-    ECG_Process *process = new ECG_Process_Exclude_IO( MPI_Handler::get_rank(), MPI_Handler::get_size() );
-    process->set_input( file_name_data );
-    process->set_output( file_name_output );
-
-    vector <Timer *> run_timers;
+    ECG_Process *process = new ECG_Process_Fast( MPI_Handler::get_rank(), MPI_Handler::get_size() );
 
     switch( MPI_Handler::get_rank() )
     {
         case 0: {
-            run_timers = process->main_process();
+            process->main_process( input_data, output_data );
             break;
         }
 
@@ -46,7 +42,6 @@ vector <Timer *> MPI_Handler::run(
     }
 
     delete process;
-    return run_timers;
 }
 
 void MPI_Handler::mpi_init()

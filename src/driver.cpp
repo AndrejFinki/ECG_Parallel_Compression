@@ -30,26 +30,34 @@ int main(
         int total_time = 0;
         
         for( int run = 1 ; run <= runs_per_file ; run++ ) {
+            Timer *t = nullptr;
+            Data_Handler *input_dh = nullptr;
+            Data_Handler *output_dh = nullptr;
+
+            if( !MPI_Handler::get_rank() ) {
+                t = new Timer( "Global Timer" );
+                input_dh = new Data_Handler( file_name_data );
+                output_dh = new Data_Handler( file_name_output );
+                input_dh->read();
+            }
+            
             MPI_Handler::sync();
 
-            vector <Timer *> run_timers = MPI_Handler::run( file_name_data, file_name_output );
+            MPI_Handler::run( input_dh->data(), output_dh->data() );
 
             MPI_Handler::sync();
 
             if( !MPI_Handler::get_rank() ) {
-                for( Timer *t : run_timers ) {
-                    total_time += t->check();
-                    delete t;
-                }
-            }
-
-            if( !MPI_Handler::get_rank() )
-                Compression::verify_compression( Data_Handler( file_name_data ).read(), Data_Handler( file_name_output ).read() );
+                total_time += t->check();
+                Compression::verify_compression( input_dh->data(), output_dh->data() );
+                delete t;
+                delete input_dh;
+                delete output_dh;
+            }   
         }
 
         if( !MPI_Handler::get_rank() )
             cout << file_name << " - Average time per run: " << total_time / runs_per_file << " ms." << endl << endl;
-
     }
 
     MPI_Handler::mpi_finalize();

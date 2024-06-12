@@ -16,7 +16,7 @@ public:
     ECG_Process() = default;
     ~ECG_Process(){ delete input; delete output; }
 
-    virtual vector <Timer *> main_process() = 0;
+    virtual void main_process( const vector <int> *, vector <int> * ) = 0;
     virtual void secondary_process() = 0;
 
     void set_input( const string & );
@@ -246,6 +246,60 @@ vector <Timer *> ECG_Process_Exclude_IO::main_process()
 }
 
 void ECG_Process_Exclude_IO::secondary_process()
+{
+    int data_per_process;
+    MPI_Bcast( &data_per_process, 1, MPI_INT, 0, MPI_COMM_WORLD );
+
+    vector <int> pdata( data_per_process );
+    MPI_Scatter( NULL, 0, MPI_INT, pdata.data(), data_per_process, MPI_INT, 0, MPI_COMM_WORLD );
+
+    Compression::inplace_compress( pdata );
+    
+    MPI_Gather( pdata.data(), data_per_process, MPI_INT, NULL, 0, MPI_INT, 0, MPI_COMM_WORLD );
+}
+
+
+
+class ECG_Process_Fast : public ECG_Process {
+
+public:
+
+    ECG_Process_Fast( int _rank, int _size ) : rank( _rank ), size( _size ) {};
+
+    void main_process( const vector <int> *, vector <int> * );
+    void secondary_process();
+    
+    const int rank, size;
+};
+
+void ECG_Process_Fast::main_process(
+    const vector <int> * data,
+    vector <int> * sq_data
+) {
+    int data_per_process = data->size() / this->size;
+    MPI_Bcast( &data_per_process, 1, MPI_INT, 0, MPI_COMM_WORLD );
+
+    vector <int> pdata( data_per_process );
+    MPI_Scatter( data->data(), data_per_process, MPI_INT, pdata.data(), data_per_process, MPI_INT, 0, MPI_COMM_WORLD );
+
+    Compression::inplace_compress( pdata );
+
+    sq_data->resize( data_per_process * this->size );
+    MPI_Gather( pdata.data(), data_per_process, MPI_INT, sq_data->data(), data_per_process, MPI_INT, 0, MPI_COMM_WORLD );
+    
+    if( data_per_process * this->size != data->size() ) {
+        vector <int> extra_data;
+        for( int i = data_per_process * this->size ; i < data->size() ; i++ ) {
+            extra_data.push_back( data->at(i) );
+        }
+        Compression::inplace_compress( extra_data );
+        for( int &i : extra_data ) {
+            sq_data->push_back( i );
+        }
+    }
+}
+
+void ECG_Process_Fast::secondary_process()
 {
     int data_per_process;
     MPI_Bcast( &data_per_process, 1, MPI_INT, 0, MPI_COMM_WORLD );
