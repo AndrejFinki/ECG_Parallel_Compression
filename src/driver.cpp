@@ -35,10 +35,10 @@ int main(
             Data_Handler *output_dh = nullptr;
 
             if( !MPI_Handler::get_rank() ) {
-                t = new Timer( "Global Timer" );
                 input_dh = new Data_Handler( file_name_data );
                 output_dh = new Data_Handler( file_name_output );
                 input_dh->read();
+                t = new Timer( "Global Timer" );
             }
             
             MPI_Handler::sync();
