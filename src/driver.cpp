@@ -10,7 +10,7 @@ using namespace std;
 
 const string data_dir = "../ECG_Parallel_Compression/data/";
 const string output_dir = "../ECG_Parallel_Compression/output/";
-const int runs_per_file = 3;
+const int runs_per_file = 1;
 
 int main(
     int argc,
@@ -18,20 +18,18 @@ int main(
 ) {
     MPI_Handler::mpi_init();
 
-    if( !MPI_Handler::get_rank() ) Compression::print_parameters( "*", MPI_Handler::get_size(), true );
+    if( !MPI_Handler::get_rank() )
+        Compression::print_parameters( "*", MPI_Handler::get_size(), true );
 
     vector <string> ecg_files = Data_Handler::get_files_in_dir( data_dir );
 
     for( const string &ecg_file : ecg_files ) {
-
         const string file_name = ecg_file;
         const string file_name_data = data_dir + file_name;
         const string file_name_output = output_dir + file_name;
-
         int total_time = 0;
-
+        
         for( int run = 1 ; run <= runs_per_file ; run++ ) {
-
             MPI_Handler::sync();
 
             vector <Timer *> run_timers = MPI_Handler::run( file_name_data, file_name_output );
@@ -39,17 +37,18 @@ int main(
             MPI_Handler::sync();
 
             if( !MPI_Handler::get_rank() ) {
-                for( Timer * t : run_timers ) {
+                for( Timer *t : run_timers ) {
                     total_time += t->check();
                     delete t;
                 }
             }
 
-            if( !MPI_Handler::get_rank() ) Compression::verify_compression( Data_Handler( file_name_data ).read(), Data_Handler( file_name_output ).read() );
-        
+            if( !MPI_Handler::get_rank() )
+                Compression::verify_compression( Data_Handler( file_name_data ).read(), Data_Handler( file_name_output ).read() );
         }
 
-        if( !MPI_Handler::get_rank() ) cout << file_name << " - Average time per run: " << total_time / runs_per_file << " ms." << endl << endl;
+        if( !MPI_Handler::get_rank() )
+            cout << file_name << " - Average time per run: " << total_time / runs_per_file << " ms." << endl << endl;
 
     }
 
