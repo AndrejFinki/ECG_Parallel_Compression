@@ -34,9 +34,9 @@ private:
 void Compression::inplace_compress(
     vector <int> & data
 ) {
-    for( int i = data.size() - 1 ; i ; i-- ) {
+    for( int i = data.size() - 1 ; i ; i-- )
         data[i] = compress_value( data[i-1], data[i] );
-    }
+
     data[0] = compress_value( -( 1 << 10 ), data[0] );
 }
 
@@ -76,9 +76,9 @@ void Compression::inplace_decompress(
     vector <int> & data
 ) {
     data[0] = decompress_value( 0, data[0] );
-    for( int i = 1 ; i < data.size() ; i++ ) {
+
+    for( int i = 1 ; i < data.size() ; i++ )
         data[i] = decompress_value( data[i-1], data[i] );
-    }
 }
 
 int Compression::decompress_value(
@@ -112,11 +112,13 @@ void Compression::print_parameters(
     const bool print_extra = false
 ) {
     cout << "Running compression on file " << file << " with " << size << " processes." << endl;
-    if( !print_extra ) { cout << endl; return; }
-    cout << "Bits for compression difference: " << COMPRESSION_DIFFERENCE_BITS << endl;
-    cout << "\tThis allows for maximum difference of " << COMPRESSION_DIFFERENCE_LIMIT << endl;
-    cout << "Bits for uncompressed values: " << UNCOMPRESSED_VALUE_BITS << endl;
-    cout << "\tThis allows for maximum value of " << UNCOMPRESSED_VALUE_LIMIT << endl << endl;
+    if( print_extra ) {
+        cout << "Bits for compression difference: " << COMPRESSION_DIFFERENCE_BITS << endl;
+        cout << "\tThis allows for maximum difference of " << COMPRESSION_DIFFERENCE_LIMIT << endl;
+        cout << "Bits for uncompressed values: " << UNCOMPRESSED_VALUE_BITS << endl;
+        cout << "\tThis allows for maximum value of " << UNCOMPRESSED_VALUE_LIMIT << endl;
+    }
+    cout << endl;
 }
 
 void Compression::verify_compression(
@@ -124,9 +126,8 @@ void Compression::verify_compression(
     const vector <int> * compressed_ptr
 ) {
     vector <int> compressed;
-    for( int i = 0 ; i < compressed_ptr->size() ; i++ ) {
+    for( int i = 0 ; i < compressed_ptr->size() ; i++ )
         compressed.push_back( compressed_ptr->at(i) );
-    }
 
     inplace_decompress( compressed );
     
@@ -135,12 +136,11 @@ void Compression::verify_compression(
         "Verification failed! Original and compressed vector's size doesn't match."
     );
 
-    for( int i = 0 ; i < compressed.size() ; i++ ) {
+    for( int i = 0 ; i < compressed.size() ; i++ )
         assert(
             original->at(i) == compressed[i] &&
             "Verification failed! Original and compressed vectors don't match."
         );
-    }
 }
 
 #endif
