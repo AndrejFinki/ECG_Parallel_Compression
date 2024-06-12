@@ -8,11 +8,7 @@ class Data_Handler {
 
 public:
 
-    Data_Handler(
-        string file_path_arg
-    ) {
-        file_path = file_path_arg;
-    }
+    Data_Handler( const string & );
 
     const vector <int> * read();
     void write( const vector <int> * );
@@ -24,6 +20,12 @@ private:
     vector <int> ecg_data;
 
 };
+
+Data_Handler::Data_Handler(
+    const string &file_path_arg
+) {
+    file_path = file_path_arg;
+}
 
 const vector <int> * Data_Handler::read()
 {
