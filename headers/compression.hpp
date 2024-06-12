@@ -19,6 +19,7 @@ public:
     static void inplace_decompress( vector <int> & );
     static void print_parameters( const string &, const int &, const bool );
     static void verify_compression( const vector <int> *, const vector <int> * );
+    static  int safe_compress_value( int );
 
 private:
 
@@ -141,6 +142,12 @@ void Compression::verify_compression(
             original->at(i) == compressed[i] &&
             "Verification failed! Original and compressed vectors don't match."
         );
+}
+
+int Compression::safe_compress_value(
+    int v
+) {
+    return compress_value( -( 1 << 10 ), v );
 }
 
 #endif
