@@ -38,11 +38,12 @@ const vector <int> * Data_Handler::read()
     ecg_data.clear();
 
     int value;
-    while( file >> value ) ecg_data.push_back( value );
+    while( file >> value )
+        ecg_data.push_back( value );
 
     file.close();
 
-    return &ecg_data;
+    return & ecg_data;
 }
 
 void Data_Handler::write(
@@ -52,9 +53,8 @@ void Data_Handler::write(
 
     assert( file && "Output file write failed!" );
 
-    for( int i = 0 ; i < data->size() ; i++ ) {
+    for( int i = 0 ; i < data->size() ; i++ )
         file << data->at(i) << '\n';
-    }
 
     file.close();
 }
@@ -78,7 +78,8 @@ vector <string> Data_Handler::get_files_in_dir(
 
     vector <string> files;
     string current_file;
-    while( file >> current_file ) files.push_back( current_file );
+    while( file >> current_file )
+        files.push_back( current_file );
 
     return files;
 }
