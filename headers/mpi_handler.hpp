@@ -2,11 +2,11 @@
 #define MPI_HANDLER_H
 
 #include <bits/stdc++.h>
-#include <mpi.h>
 using namespace std;
 
-#include "ecg_process.hpp"
-#include "timer.hpp"
+#include <mpi.h>
+
+#include "ecg_process_mpi.hpp"
 
 class MPI_Handler {
 
@@ -27,7 +27,7 @@ void MPI_Handler::run(
     const vector <int> * input_data,
     vector <int> * output_data
 ) {
-    ECG_Process *process = new ECG_Process_Fast( MPI_Handler::get_rank(), MPI_Handler::get_size() );
+    ECG_Process *process = new ECG_Process_MPI( MPI_Handler::get_rank(), MPI_Handler::get_size() );
 
     switch( MPI_Handler::get_rank() )
     {

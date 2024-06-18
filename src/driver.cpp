@@ -7,6 +7,7 @@ using namespace std;
 #include "../headers/mpi_handler.hpp"
 #include "../headers/timer.hpp"
 #include "../headers/compression.hpp"
+#include "../headers/data_handler.hpp"
 
 const string data_dir = "../ECG_Parallel_Compression/data/";
 const string output_dir = "../ECG_Parallel_Compression/output/";
